@@ -219,6 +219,11 @@
 				});
 
 				editor = monaco.editor.create(document.getElementById('container'), {
+
+					editor.onDidChangeModelContent(() => {
+					  window.parent.postMessage({ type: "contentChanged", content: editor.getValue() }, "*");
+					});
+					
 					value: 'print("Hello, world!");',
 					language: 'lua',
 					theme: "PDark",
@@ -324,6 +329,12 @@
 					editor.setValue(String(x))
 				}
 			}
+
+			window.addEventListener("message", function(e) {
+			  if (e.data?.type === "setText") {
+			    editor.setValue(e.data.content ?? "");
+			  }
+			});
 
 			GetProposals = function () {
 				return Proposals;
@@ -477,4 +488,5 @@
 </body>
 
 </html>
+
 
