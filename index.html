@@ -208,6 +208,8 @@
 				}
 			});
 
+			window.parent.postMessage({ type: "ready" }, "*");
+
 			require(['vs/basic-languages/monaco.contribution'], function () {
 				monaco.languages.registerCompletionItemProvider('lua', {
 					provideCompletionItems: function (model, position) {
@@ -332,6 +334,21 @@
 			window.addEventListener("message", function(e) {
 			  if (e.data?.type === "setText") {
 			    editor.setValue(e.data.content ?? "");
+			  }
+			});
+
+			window.addEventListener("message", function(e) {
+			  if (e.data?.type === "setText") {
+			    editor.setValue(e.data.content ?? "");
+			  }
+			  if (e.data?.type === "setOption") {
+			    const { option, value } = e.data;
+			    if (option === "minimap") SwitchMinimap(value.enabled);
+			    if (option === "smoothScrolling") SwitchSmoothScrolling(value);
+			    if (option === "cursorSmoothCaretAnimation") SwitchSmoothCaretAnimation(value);
+			    if (option === "folding") SwitchFolding(value);
+			    if (option === "fontLigatures") SwitchFontLigatures(value);
+			    if (option === "wordWrap") SwitchWordWrap(value);
 			  }
 			});
 
@@ -487,6 +504,7 @@
 </body>
 
 </html>
+
 
 
 
