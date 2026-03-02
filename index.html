@@ -219,11 +219,6 @@
 				});
 
 				editor = monaco.editor.create(document.getElementById('container'), {
-
-					editor.onDidChangeModelContent(() => {
-					  window.parent.postMessage({ type: "contentChanged", content: editor.getValue() }, "*");
-					});
-					
 					value: 'print("Hello, world!");',
 					language: 'lua',
 					theme: "PDark",
@@ -251,6 +246,10 @@
 					padding: {
 						top: 6,
 					}
+				});
+
+				editor.onDidChangeModelContent(() => {
+				    window.parent.postMessage({ type: "contentChanged", content: editor.getValue() }, "*");
 				});
 				
 				try {
@@ -488,5 +487,6 @@
 </body>
 
 </html>
+
 
 
